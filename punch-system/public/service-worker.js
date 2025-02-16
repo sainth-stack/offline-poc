@@ -1,21 +1,14 @@
+// public/service-worker.js
 self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open("my-cache").then((cache) => {
-      return cache.addAll([
-        "/",
-        "/index.html",
-        "/static/js/bundle.js",
-        "/static/css/main.css",
-        "/logo192.png",
-      ]);
-    })
-  );
+  console.log("Service Worker installing.");
+  event.waitUntil(self.skipWaiting()); // Activate immediately
+});
+
+self.addEventListener("activate", (event) => {
+  console.log("Service Worker activated.");
+  event.waitUntil(self.clients.claim()); // Take control immediately
 });
 
 self.addEventListener("fetch", (event) => {
-  event.respondWith(
-    caches.match(event.request).then((response) => {
-      return response || fetch(event.request);
-    })
-  );
+  console.log("Service Worker fetching:", event.request.url);
 });

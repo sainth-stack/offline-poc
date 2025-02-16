@@ -135,10 +135,10 @@ const FacialRecognition = ({ onPunchUpdate }) => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center w-full ">
       {!hasPunchedIn && (
         <button
-          className={`bg-green-500 text-white py-1 px-3 rounded hover:bg-green-600 ${
+          className={`bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 ${
             loading ? "opacity-50 cursor-not-allowed" : ""
           }`}
           onClick={() => handleFaceDetection("punchIn")}
@@ -147,9 +147,10 @@ const FacialRecognition = ({ onPunchUpdate }) => {
           {loading ? "Processing..." : "Punch In"}
         </button>
       )}
+
       {hasPunchedIn && !punchData.punchOut && (
         <button
-          className={`bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600 ${
+          className={`bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 ${
             loading ? "opacity-50 cursor-not-allowed" : ""
           }`}
           onClick={() => handleFaceDetection("punchOut")}
@@ -157,6 +158,14 @@ const FacialRecognition = ({ onPunchUpdate }) => {
         >
           {loading ? "Processing..." : "Punch Out"}
         </button>
+      )}
+
+      {/* Show Confirmation Message After Punch Out */}
+      {punchData.punchOut && (
+        <div className="font-semibold text-center bg-green-100 text-green-700 px-4 py-1 rounded-lg shadow-md">
+          ✅ Your punch-out has been recorded successfully!
+         
+        </div>
       )}
     </div>
   );
