@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import FacialRecognition from "./components/FaceRecog";
-import PunchLog from "./components/PunchLog";
+import FacialRecognition from "./components/FaceRecogNew";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import PunchLog from './components/PunchLog';
 
 const App = () => {
   const [logs, setLogs] = useState([]);
