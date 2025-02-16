@@ -3,6 +3,7 @@ import Webcam from "react-webcam";
 import * as faceapi from "@vladmandic/face-api";
 import { toast } from "react-toastify";
 import axios from "axios";
+import base_url from './../const';
 
 const FacialRecognition = ({ onPunchUpdate }) => {
   const webcamRef = useRef(null);
@@ -90,7 +91,7 @@ const FacialRecognition = ({ onPunchUpdate }) => {
 
         // Send data to backend
         try {
-          await axios.post("http://localhost:5000/api/locations", punchDetails);
+          await axios.post( `${base_url}api/locations`, punchDetails);
           toast.success(`Punch recorded successfully at ${timestamp}.`);
         } catch (error) {
           toast.error("Failed to sync punch data.");
