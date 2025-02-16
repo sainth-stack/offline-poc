@@ -1,5 +1,4 @@
-// export const MONGO_URI =
-//   "mongodb+srv://prashanth:BnHRQrqZHdnosfEe@cluster0.cpydc.mongodb.net/location-db?retryWrites=true&w=majority";
+export const MONGO_URI =  "mongodb+srv://prashanth:BnHRQrqZHdnosfEe@cluster0.cpydc.mongodb.net/location-db?retryWrites=true&w=majority";
 
-export const MONGO_URI =
-  "mongodb://localhost:27017/location-db"
+// export const MONGO_URI =
+//   "mongodb://localhost:27017/location-db
