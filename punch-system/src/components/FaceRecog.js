@@ -92,7 +92,7 @@ const FacialRecognition = ({ onPunchUpdate }) => {
 
         // Send data to backend
         try {
-          await axios.post( `${base_url}/api/locations`, punchDetails);
+          await axios.post( `${base_url}api/locations`, punchDetails);
           toast.success(`Punch recorded successfully at ${timestamp}.`);
         } catch (error) {
           toast.error("Failed to sync punch data.");
