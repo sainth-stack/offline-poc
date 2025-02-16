@@ -13,23 +13,36 @@ const FacialRecognition = ({ onPunchUpdate }) => {
   const [location, setLocation] = useState(null);
   const [hasPunchedIn, setHasPunchedIn] = useState(false);
   const [punchData, setPunchData] = useState({ punchIn: null, punchOut: null });
-
-  // Load face detection models
   useEffect(() => {
     const loadModels = async () => {
       try {
+        console.log("Loading face detection models...");
+        
+        // Check if the model is available in cache
+        const cache = await caches.open("my-cache-v1");
+        const cachedModel = await cache.match("/models/tiny_face_detector_model-weights_manifest.json");
+  
+        if (cachedModel) {
+          console.log("Loading models from cache...");
+        } else {
+          console.log("Fetching models from network...");
+        }
+  
+        // Load models from local directory
         await faceapi.nets.tinyFaceDetector.loadFromUri("/models/");
         setModelsLoaded(true);
         console.log("Models loaded successfully.");
       } catch (error) {
         console.error("Error loading models:", error);
-        toast.error("Failed to load face detection models. Please refresh.");
+        toast.error(
+          "Failed to load face detection models. Please ensure the models are present in the public/models directory."
+        );
       }
     };
-
+  
     loadModels();
   }, []);
-
+  
   // Get user's location
   useEffect(() => {
     if (!navigator.geolocation) {
