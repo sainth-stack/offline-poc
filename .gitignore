@@ -1,3 +1,6 @@
 node_modules/
 puch-system-node/node_modules/
 puch-system/node_modules/
+/punch-system/android/
+/punch-system/ios/
+/punch-system/web/
