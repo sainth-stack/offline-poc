@@ -14,14 +14,14 @@ const App = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
       <div className="bg-white shadow-lg rounded-lg w-full max-w-3xl p-4">
-        <h1 className="text-3xl font-bold text-center text-gray-800">
+        <h1 className="text-xl  font-semibold text-center text-gray-800">
           Punch In/Out System
         </h1>
 
         <div className="mb-4">
-          <h2 className="text-lg font-semibold text-gray-700">
+          {/* <h2 className="text-lg font-semibold text-gray-700">
             Facial Recognition
-          </h2>
+          </h2> */}
           <div className="bg-gray-200 p-3 rounded-lg">
             <FacialRecognition onPunchUpdate={handlePunchUpdate} />
           </div>
