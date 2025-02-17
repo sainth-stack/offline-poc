@@ -3,6 +3,7 @@ import Webcam from "react-webcam";
 import { toast } from "react-toastify";
 import axios from "axios";
 import {base_url} from './../const';
+import MapComponent from "./MapComponent";
 
 
 const FacialRecognition = ({ onPunchUpdate }) => {
@@ -15,6 +16,7 @@ const FacialRecognition = ({ onPunchUpdate }) => {
   const [totalDistance, setTotalDistance] = useState(0);
   const [hasPunchedIn, setHasPunchedIn] = useState(false);
   const [punchData, setPunchData] = useState({ punchIn: null, punchOut: null });
+   const [mapCoords, setMapCoords] = useState(null);
 
   // Function to calculate distance in km
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
@@ -71,6 +73,8 @@ const FacialRecognition = ({ onPunchUpdate }) => {
       toast.error("Location not available. Please enable GPS.");
       return;
     }
+
+    setMapCoords(location);
 
     const punchType = type === "punchIn" ? "Punch In" : "Punch Out";
     const timestamp = new Date().toLocaleString();
@@ -167,7 +171,17 @@ const FacialRecognition = ({ onPunchUpdate }) => {
       {punchData.punchOut && (
         <div className="font-semibold text-center bg-green-100 text-green-700 px-4 py-1 rounded-lg shadow-md">
           ✅ Your punch-out has been recorded successfully!
-         
+        </div>
+      )}
+
+      {/* Display Map when location is available */}
+
+      {mapCoords && (
+        <div className="my-2">
+          <MapComponent
+            latitude={mapCoords.latitude}
+            longitude={mapCoords.longitude}
+          />
         </div>
       )}
     </div>
