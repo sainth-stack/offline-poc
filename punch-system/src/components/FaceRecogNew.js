@@ -2,9 +2,12 @@ import React, { useRef, useState, useEffect } from "react";
 import Webcam from "react-webcam";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { base_local } from "../const";
+import {base_url} from './../const';
+
 
 const FacialRecognition = ({ onPunchUpdate }) => {
+
+  console.log("cheking base url",base_url)
   const webcamRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [location, setLocation] = useState(null);
@@ -105,7 +108,7 @@ const FacialRecognition = ({ onPunchUpdate }) => {
 
     // Send data to backend
     try {
-      await axios.post(`${base_local}/api/locations`, punchDetails);
+      await axios.post(`${base_url}/api/locations`, punchDetails);
       toast.success(`Punch recorded successfully at ${timestamp}.`);
     } catch (error) {
       toast.error("Failed to sync punch data.");
@@ -120,7 +123,7 @@ const FacialRecognition = ({ onPunchUpdate }) => {
 
     offlineData.forEach(async (data) => {
       try {
-        await axios.post(`${base_local}/api/locations`, data);
+        await axios.post(`${base_url}/api/locations`, data);
       } catch (error) {
         console.error("Offline sync failed", error);
       }
