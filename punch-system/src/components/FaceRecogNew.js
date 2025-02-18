@@ -2,13 +2,10 @@ import React, { useRef, useState, useEffect } from "react";
 import Webcam from "react-webcam";
 import { toast } from "react-toastify";
 import axios from "axios";
-import {base_url} from './../const';
+import { base_url } from "./../const";
 import MapComponent from "./MapComponent";
 
-
 const FacialRecognition = ({ onPunchUpdate }) => {
-
-  console.log("cheking base url",base_url)
   const webcamRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [location, setLocation] = useState(null);
@@ -16,7 +13,7 @@ const FacialRecognition = ({ onPunchUpdate }) => {
   const [totalDistance, setTotalDistance] = useState(0);
   const [hasPunchedIn, setHasPunchedIn] = useState(false);
   const [punchData, setPunchData] = useState({ punchIn: null, punchOut: null });
-   const [mapCoords, setMapCoords] = useState(null);
+  const [mapCoords, setMapCoords] = useState(null);
 
   // Function to calculate distance in km
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
@@ -44,6 +41,7 @@ const FacialRecognition = ({ onPunchUpdate }) => {
     const watchId = navigator.geolocation.watchPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
+        console.log("Location updated:", latitude, longitude); // Add log to verify
         setLocation({ latitude, longitude });
       },
       (error) => toast.error(`Geolocation error: ${error.message}`),
@@ -74,7 +72,7 @@ const FacialRecognition = ({ onPunchUpdate }) => {
       return;
     }
 
-    setMapCoords(location);
+    setMapCoords(location); // Set location
 
     const punchType = type === "punchIn" ? "Punch In" : "Punch Out";
     const timestamp = new Date().toLocaleString();
@@ -120,20 +118,22 @@ const FacialRecognition = ({ onPunchUpdate }) => {
   };
 
   // Function to sync offline punches when online
-  const syncOfflineData = () => {
+  const syncOfflineData = async () => {
     const offlineData =
       JSON.parse(localStorage.getItem("offlinePunches")) || [];
     if (offlineData.length === 0) return;
 
-    offlineData.forEach(async (data) => {
+    for (let data of offlineData) {
       try {
         await axios.post(`${base_url}/api/locations`, data);
       } catch (error) {
         console.error("Offline sync failed", error);
       }
-    });
+    }
 
+    // After syncing, remove data from localStorage
     localStorage.removeItem("offlinePunches");
+    toast.success("Offline data synced successfully.");
   };
 
   useEffect(() => {
@@ -143,6 +143,7 @@ const FacialRecognition = ({ onPunchUpdate }) => {
 
   return (
     <div className="flex flex-col items-center w-full ">
+      {/* Punch In Button */}
       {!hasPunchedIn && (
         <button
           className={`bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 ${
@@ -155,6 +156,7 @@ const FacialRecognition = ({ onPunchUpdate }) => {
         </button>
       )}
 
+      {/* Punch Out Button */}
       {hasPunchedIn && !punchData.punchOut && (
         <button
           className={`bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 ${
@@ -167,7 +169,7 @@ const FacialRecognition = ({ onPunchUpdate }) => {
         </button>
       )}
 
-      {/* Show Confirmation Message After Punch Out */}
+      {/* Confirmation Message After Punch Out */}
       {punchData.punchOut && (
         <div className="font-semibold text-center bg-green-100 text-green-700 px-4 py-1 rounded-lg shadow-md">
           ✅ Your punch-out has been recorded successfully!
@@ -175,15 +177,7 @@ const FacialRecognition = ({ onPunchUpdate }) => {
       )}
 
       {/* Display Map when location is available */}
-
-      {mapCoords && (
-        <div className="my-2">
-          <MapComponent
-            latitude={mapCoords.latitude}
-            longitude={mapCoords.longitude}
-          />
-        </div>
-      )}
+      
     </div>
   );
 };
