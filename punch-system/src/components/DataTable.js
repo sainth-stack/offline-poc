@@ -1,7 +1,66 @@
 import React from "react";
 
+// Haversine formula to calculate distance between two coordinates
+const haversine = (lat1, lon1, lat2, lon2) => {
+  const R = 6371.0; // Radius of the Earth in km
+  const lat1Rad = (Math.PI / 180) * lat1;
+  const lon1Rad = (Math.PI / 180) * lon1;
+  const lat2Rad = (Math.PI / 180) * lat2;
+  const lon2Rad = (Math.PI / 180) * lon2;
+
+  const dlat = lat2Rad - lat1Rad;
+  const dlon = lon2Rad - lon1Rad;
+
+  const a =
+    Math.sin(dlat / 2) ** 2 +
+    Math.cos(lat1Rad) *
+      Math.cos(lat2Rad) *
+      Math.sin(dlon / 2) ** 2;
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c; // Distance in km
+};
+
 const DataTable = ({ columns, data }) => {
-  console.log("data in table.....", data);
+
+  // Function to calculate distance between two rows
+  const calculateDistanceForSecondRow = (data) => {
+    if (data.length >= 2) {
+      console.log("data in table.....", data);
+
+      const row1 = data[0];
+      const row2 = data[1];
+
+      // Check if both coordinates are available
+      if (
+        row1.latitude &&
+        row1.longitude &&
+        row2.latitude &&
+        row2.longitude
+      ) {
+        console.log("Coordinates for row 1:", row1.longitude, row1.latitude);
+        console.log("Coordinates for row 2:", row2.longitude, row2.latitude);
+
+        // Calculate distance
+        const distance = haversine(
+          row1.longitude,
+          row1.latitude,
+          row2.longitude,
+          row2.latitude
+        );
+        console.log("Calculated Distance:", distance);
+
+        // Return the distance in km, with 2 decimal places
+        return distance.toFixed(3);
+      } else {
+        console.log("Missing coordinates for distance calculation.");
+      }
+    }
+    return 0;
+  };
+
+  // Calculate distance for second row if applicable
+  const distanceForSecondRow = calculateDistanceForSecondRow(data);
+  console.log("distanceForSecondRow", distanceForSecondRow);
 
   return (
     <div className="mt-4 bg-white p-2 rounded shadow-md w-full max-w-4xl h-80 overflow-auto">
@@ -30,7 +89,7 @@ const DataTable = ({ columns, data }) => {
                 {columns.map((col) => (
                   <td
                     key={col.key}
-                    className="px-2 py-1 border border-gray-200 text-sm text-center font-semibold "
+                    className="px-2 py-1 border border-gray-200 text-sm text-center font-semibold"
                   >
                     {col.key === "image" ? (
                       row[col.key] && typeof row[col.key] === "string" ? (
@@ -48,6 +107,9 @@ const DataTable = ({ columns, data }) => {
                       ) : (
                         <span>😊 Welcome</span>
                       )
+                    ) : col.key === "distanceTraveled" && index === 1 ? (
+                      // Render distance on the second row
+                      distanceForSecondRow + " km"
                     ) : col.render ? (
                       col.render(row[col.key], row)
                     ) : (

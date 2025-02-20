@@ -6,6 +6,7 @@
     "@capacitor/android": "^7.0.1",
     "@capacitor/cli": "^7.0.1",
     "@capacitor/core": "^7.0.1",
+    "@capacitor/geolocation": "^7.1.0",
     "@capacitor/ios": "^7.0.1",
     "@react-google-maps/api": "^2.20.6",
     "@tensorflow/tfjs": "^4.22.0",
@@ -16,8 +17,11 @@
     "cra-template-tailwindcss": "4.0.1",
     "face-api.js": "^0.22.2",
     "idb": "^8.0.2",
+    "leaflet": "^1.9.4",
+    "leaflet.offline": "^3.1.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-leaflet": "^5.0.0",
     "react-native": "^0.77.1",
     "react-scripts": "5.0.1",
     "react-toastify": "^11.0.3",
@@ -48,5 +52,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "workbox-webpack-plugin": "^7.3.0"
   }
 }
